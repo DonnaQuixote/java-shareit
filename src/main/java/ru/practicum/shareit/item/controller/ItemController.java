@@ -2,16 +2,12 @@ package ru.practicum.shareit.item.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/items")
@@ -49,17 +45,5 @@ public class ItemController {
     public List<ItemDto> searchItems(@RequestParam String text) {
         log.debug(String.format("Получен запрос GET на поиск по строке: %s", text));
         return service.searchItems(text);
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String,String> handleNotFound(final NoSuchElementException e) {
-        return Map.of("ОШИБКА", "id пользователя или вещи некорректен");
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String,String> handleNoHeader(final MissingRequestHeaderException e) {
-        return Map.of("ОШИБКА", "id пользователя не обнаружен");
     }
 }

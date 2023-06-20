@@ -44,13 +44,11 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public boolean isEmailNotExists(Long id, String email) {
-        boolean notExists = true;
         for (User user : users.values()) {
             if (user.getEmail().equalsIgnoreCase(email) && !Objects.equals(user.getId(), id)) {
-                notExists = false;
-                break;
+                return false;
             }
         }
-        return notExists;
+        return true;
     }
 }

@@ -2,15 +2,12 @@ package ru.practicum.shareit.user.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.service.UserService;
 import ru.practicum.shareit.user.dto.UserDto;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/users")
@@ -47,11 +44,5 @@ public class UserController {
     public void deleteUser(@PathVariable Long userId) {
         log.debug(String.format("Получен запрос DELETE пользователя с id %d", userId));
         service.deleteUser(userId);
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public Map<String,String> handleEmailDuplication(final ValidationException e) {
-        return Map.of("ОШИБКА", "Пользователь с данным email уже существует");
     }
 }
