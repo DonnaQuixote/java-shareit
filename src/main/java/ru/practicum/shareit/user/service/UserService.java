@@ -2,12 +2,11 @@ package ru.practicum.shareit.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.user.dao.UserStorage;
+import ru.practicum.shareit.user.dao.UserRepository;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserMapper;
 import ru.practicum.shareit.user.model.User;
 
-import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -15,36 +14,33 @@ import java.util.NoSuchElementException;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserStorage storage;
+    private final UserRepository repository;
 
     public UserDto getUser(Long id) {
-        if (storage.getUser(id) != null) {
-            return UserMapper.toUserDto(storage.getUser(id));
+        if (repository.findById(id).isPresent()) {
+            return UserMapper.toUserDto(repository.findById(id).get());
         } else throw new NoSuchElementException("Пользователь не найден");
     }
 
     public List<UserDto> getUsers() {
         List<UserDto> usersDto = new ArrayList<>();
-        List<User> users = storage.getUsers();
-        for (User user : users) {
-            usersDto.add(UserMapper.toUserDto(user));
-        }
+        List<User> users = repository.findAll();
+        users.forEach(user -> usersDto.add(UserMapper.toUserDto(user)));
         return usersDto;
     }
 
     public UserDto postUser(UserDto user) {
-        if (storage.isEmailNotExists(null, user.getEmail())) {
-            return UserMapper.toUserDto(storage.postUser(UserMapper.toUser(user)));
-        } else throw new ValidationException("Пользователь с данным email уже существует");
+        return UserMapper.toUserDto(repository.save(UserMapper.toUser(user)));
     }
 
     public UserDto patchUser(Long id, UserDto user) {
-        if (storage.isEmailNotExists(id, user.getEmail())) {
-            return UserMapper.toUserDto(storage.patchUser(id, UserMapper.toUser(user)));
-        } else throw new ValidationException("Пользователь с данным email уже существует");
+        User oldUser = repository.findById(id).orElseThrow();
+        if (user.getName() != null) oldUser.setName(user.getName());
+        if (user.getEmail() != null) oldUser.setEmail(user.getEmail());
+        return UserMapper.toUserDto(repository.save(oldUser));
     }
 
     public void deleteUser(Long id) {
-        storage.deleteUser(id);
+        repository.deleteById(id);
     }
 }

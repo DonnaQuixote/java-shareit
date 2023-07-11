@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.comment.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
 
@@ -30,9 +31,9 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ItemDto getItem(@PathVariable Long itemId) {
+    public ItemDto getItem(@PathVariable Long itemId, @RequestHeader("X-Sharer-User-Id") Long userId) {
         log.debug(String.format("Получен запрос GET вещи с id %d", itemId));
-        return service.getItem(itemId);
+        return service.getItem(itemId, userId);
     }
 
     @GetMapping
@@ -45,5 +46,12 @@ public class ItemController {
     public List<ItemDto> searchItems(@RequestParam String text) {
         log.debug(String.format("Получен запрос GET на поиск по строке: %s", text));
         return service.searchItems(text);
+    }
+
+    @PostMapping("/{itemId}/comment")
+    public CommentDto postComment(@PathVariable Long itemId, @RequestBody @Valid CommentDto comment,
+                                  @RequestHeader("X-Sharer-User-Id") Long userId) {
+        log.debug(String.format("Получен запрос POST на комментарий к вещи %d от пользователя %d", itemId, userId));
+        return service.postComment(itemId,userId,comment);
     }
 }
