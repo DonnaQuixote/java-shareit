@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.dto;
 
+import ru.practicum.shareit.comment.CommentMapper;
 import ru.practicum.shareit.item.model.Item;
 
 public class ItemMapper {
@@ -13,7 +14,7 @@ public class ItemMapper {
                 item.getRequest(),
                 null,
                 null,
-                null
+                CommentMapper.toCommentDto(item.getComments())
         );
     }
 

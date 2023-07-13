@@ -8,8 +8,8 @@ public class BookingMapper {
         return new Booking(bookingDto.getId(),
                 bookingDto.getStart(),
                 bookingDto.getEnd(),
-                bookingDto.getItemId(),
-                bookingDto.getBookerId(),
+                bookingDto.getItem(),
+                bookingDto.getBooker(),
                 bookingDto.getStatus());
     }
 
@@ -17,10 +17,10 @@ public class BookingMapper {
         return new BookingDto(booking.getId(),
                 booking.getStart(),
                 booking.getEnd(),
+                booking.getItem().getId(),
                 booking.getItem(),
-                null,
+                booking.getBooker().getId(),
                 booking.getBooker(),
-                null,
                 booking.getStatus());
     }
 }

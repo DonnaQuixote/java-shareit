@@ -1,6 +1,5 @@
 package ru.practicum.shareit.booking.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,10 +23,8 @@ public class BookingDto {
     @NotNull(message = "Необходимо время конца аренды")
     private LocalDateTime end;
     private Long itemId;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Item item;
     private Long bookerId;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private User booker;
     private BookingStatus status;
 }

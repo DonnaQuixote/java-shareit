@@ -1,15 +1,12 @@
 package ru.practicum.shareit.booking.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.service.BookingService;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
 import java.util.List;
-import java.util.Map;
 
 
 @RestController
@@ -45,11 +42,5 @@ public class BookingController {
     public List<BookingDto> getBookingsByOwner(@RequestParam(required = false, defaultValue = "ALL") String state,
                                                @RequestHeader(name = "X-Sharer-User-Id") Long userId) {
         return service.getBookingsByOwner(userId, state);
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String,String> handleBadRequest(final ValidationException e) {
-        return Map.of("ОШИБКА", e.getMessage());
     }
 }
