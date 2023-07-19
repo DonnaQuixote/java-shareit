@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ValidationException;
+import java.time.DateTimeException;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -28,6 +29,24 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public Map<String,String> handleEmailDuplication(final ValidationException e) {
-        return Map.of("ОШИБКА", "Пользователь с данным email уже существует");
+        return Map.of("ОШИБКА", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String,String> handleWrongDateTime(final DateTimeException e) {
+        return Map.of("ОШИБКА", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String,String> handleChangeStatusWhenApproved(final UnsupportedOperationException e) {
+        return Map.of("ОШИБКА", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String,String> handleBadEnum(final IllegalArgumentException e) {
+        return Map.of("error", "Unknown state: UNSUPPORTED_STATUS");
     }
 }
