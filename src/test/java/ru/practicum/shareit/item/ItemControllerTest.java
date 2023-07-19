@@ -123,8 +123,8 @@ public class ItemControllerTest {
 
     @Test
     void postCommentTest() throws Exception {
-        CommentDto commentDto = CommentDto.builder().text("Text test").
-                authorName("test").created(LocalDateTime
+        CommentDto commentDto = CommentDto.builder().text("Text test")
+                .authorName("test").created(LocalDateTime
                         .of(2023,1,1,1,1, 1, 1)).build();
         when(itemService.postComment(anyLong(), anyLong(), any())).thenReturn(commentDto);
         mvc.perform(post("/items/1/comment")
