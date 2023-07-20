@@ -21,7 +21,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String,String> handleNoHeader(final MissingRequestHeaderException e) {
         return Map.of("ОШИБКА", "id пользователя не обнаружен");
     }
