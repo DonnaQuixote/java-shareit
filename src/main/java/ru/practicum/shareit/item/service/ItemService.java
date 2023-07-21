@@ -13,9 +13,9 @@ public interface ItemService {
 
     ItemDto getItem(Long id, Long userId);
 
-    List<ItemDto> getItems(Long userId);
+    List<ItemDto> getItems(Long userId, Integer from, Integer size);
 
-    List<ItemDto> searchItems(String text);
+    List<ItemDto> searchItems(String text, Integer from, Integer size);
 
     CommentDto postComment(Long itemId, Long userId, CommentDto comment);
 }

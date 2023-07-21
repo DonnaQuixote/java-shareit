@@ -1,6 +1,8 @@
 package ru.practicum.shareit.booking.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.booking.dto.BookingStatus;
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "bookings")
+@Builder
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +32,7 @@ public class Booking {
     private User booker;
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
+    @JsonBackReference
     private Item item;
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
@@ -40,5 +44,16 @@ public class Booking {
         this.item = item;
         this.booker = booker;
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "id=" + id +
+                ", start=" + start +
+                ", end=" + end +
+                ", booker=" + booker +
+                ", status=" + status +
+                '}';
     }
 }

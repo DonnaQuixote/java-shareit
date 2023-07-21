@@ -2,18 +2,22 @@ package ru.practicum.shareit.item.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.comment.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 public class ItemController {
     private final ItemService service;
 
@@ -37,15 +41,19 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemDto> getItems(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public List<ItemDto> getItems(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                  @RequestParam(defaultValue = "0") @Min(value = 0) Integer from,
+                                  @RequestParam(defaultValue = "10") @Positive Integer size) {
         log.debug(String.format("Получен запрос GET на вещи пользователя %d", userId));
-        return service.getItems(userId);
+        return service.getItems(userId, from, size);
     }
 
     @GetMapping("/search")
-    public List<ItemDto> searchItems(@RequestParam String text) {
+    public List<ItemDto> searchItems(@RequestParam String text,
+                                     @RequestParam(defaultValue = "0") @Min(value = 0) Integer from,
+                                     @RequestParam(defaultValue = "10") @Positive Integer size) {
         log.debug(String.format("Получен запрос GET на поиск по строке: %s", text));
-        return service.searchItems(text);
+        return service.searchItems(text, from, size);
     }
 
     @PostMapping("/{itemId}/comment")

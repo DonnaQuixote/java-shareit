@@ -21,14 +21,14 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String,String> handleNoHeader(final MissingRequestHeaderException e) {
         return Map.of("ОШИБКА", "id пользователя не обнаружен");
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public Map<String,String> handleEmailDuplication(final ValidationException e) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String,String> handleValidation(final ValidationException e) {
         return Map.of("ОШИБКА", e.getMessage());
     }
 
