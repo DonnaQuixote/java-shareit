@@ -22,4 +22,10 @@ public class ErrorHandler {
     public Map<String,String> handleBadEnum(final IllegalArgumentException e) {
         return Map.of("error", "Unknown state: UNSUPPORTED_STATUS");
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Map<String, String> handleRuntimeException(final RuntimeException e) {
+        return Map.of("ОШИБКА", e.getMessage());
+    }
 }
